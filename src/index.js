@@ -5,33 +5,22 @@ import 'antd/dist/antd.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './store/rootReducer'
-// import {FirebaseDatabaseProvider} from "@react-firebase/database";
-// import firebase from "firebase";
 import 'firebase/database';
 import {Provider} from "react-redux";
-import {BrowserRouter, Route} from "react-router-dom"; // If using Firebase database
-
-// Firebase Config
-// const config = {
-//     apiKey: "AIzaSyCB9F4ITkZgbxUiZDKc5IYBBmlLE-Ca3to",
-//     authDomain: "frontend-test-dav.firebaseapp.com",
-//     projectId: "frontend-test-dav",
-//     storageBucket: "frontend-test-dav.appspot.com",
-//     messagingSenderId: "253460776469",
-//     appId: "1:253460776469:web:ff7051d753dacff985301c"
-// };
+import {BrowserRouter, Route, Switch} from "react-router-dom"; // If using Firebase database
 
 ReactDOM.render(
   <React.StrictMode>
       <BrowserRouter>
           <Provider store={store}>
-          {/*<FirebaseDatabaseProvider firebase={firebase} {...config}>*/}
-          {/*    <Switch>*/}
-                  <Route path="/">
-                      <App />
+              <Switch>
+                  <Route path="/"  >
+                      <App/>
                   </Route>
-              {/*</Switch>*/}
-          {/*</FirebaseDatabaseProvider>*/}
+                  <Route path="/" >
+
+                  </Route>
+              </Switch>
           </Provider>
       </BrowserRouter>
   </React.StrictMode>,
