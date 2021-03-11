@@ -50,8 +50,8 @@ export const getData = (owner, repo, page=1) => {
 
 const initialState = {
     loading: false,
-    owner: 'octocat',
-    repo: 'hello-world',
+    owner: '',
+    repo: '',
     data: [],
     current: 1
 
