@@ -7,20 +7,25 @@ import reportWebVitals from './reportWebVitals';
 import store from './store/rootReducer'
 import 'firebase/database';
 import {Provider} from "react-redux";
-import {BrowserRouter, Route, Switch} from "react-router-dom"; // If using Firebase database
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import AppWithData from "./components/AppWithData";
+import NotFound from "./components/NotFound";
 
 ReactDOM.render(
   <React.StrictMode>
       <BrowserRouter>
           <Provider store={store}>
-              <Switch>
-                  <Route path="/"  >
-                      <App/>
-                  </Route>
-                  <Route path="/" >
-
-                  </Route>
-              </Switch>
+                  <Switch>
+                      <Route path="/search"  >
+                          <AppWithData/>
+                      </Route>
+                      <Route exact path="/"   >
+                          <App/>
+                      </Route>
+                      <Route path='/' >
+                          <NotFound/>
+                      </Route>
+                  </Switch>
           </Provider>
       </BrowserRouter>
   </React.StrictMode>,

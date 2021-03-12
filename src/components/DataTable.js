@@ -7,7 +7,7 @@ const { Column } = Table;
 const DataTable = () => {
     const { data } = useSelector(state => state.app)
 
-    return(
+    return data.length ? (
         <Table style={{marginTop: '50px'}}
                dataSource={data}
                key={data.id}
@@ -21,7 +21,7 @@ const DataTable = () => {
                 return <a href={e.html_url} >{e.html_url}</a>
             }} />
         </Table>
-    )
+    ) : ''
 }
 
 export default DataTable

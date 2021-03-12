@@ -1,6 +1,7 @@
 import React from 'react'
 import {Button, Form, Input, message} from "antd";
-import {useDispatch, useSelector} from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
+import {getData, setOwner, setRepo} from "../store/appReducer";
 
 const SearchForm = ({setOwner, setRepo, getData,}) => {
     const dispatch = useDispatch()
@@ -25,4 +26,4 @@ const SearchForm = ({setOwner, setRepo, getData,}) => {
     </Form>)
 }
 
-export default SearchForm
+export default connect(null,{setOwner, setRepo, getData})(SearchForm)
