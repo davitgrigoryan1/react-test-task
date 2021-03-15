@@ -4,6 +4,8 @@ const APP_SET_REPO = "APP_SET_REPO";
 const APP_SET_DATA = "APP_SET_DATA";
 const TOGGLE_LOADING = "TOGGLE_LOADING";
 const APP_SET_CURRENT = "APP_SET_CURRENT";
+const APP_SET_FORKS_COUNT = "APP_SET_FORKS_COUNT";
+const APP_SET_PAGE = "APP_SET_PAGE";
 
 export const setOwner = text => {
     return {
@@ -32,11 +34,34 @@ const setData = data => {
     }
 }
 
-export const getData = (owner, repo, page=1) => {
-    return async dispatch => {
+const setForksCount = count => {
+    return {
+        type: APP_SET_FORKS_COUNT,
+        payload: count
+    }
+}
+
+const setPage = page => {
+    return {
+        type: APP_SET_PAGE,
+        payload: page
+    }
+}
+
+export const getData = (owner, repo, page= 1,per_page = 10, type='get') => {
+    return async (dispatch, getState) => {
         dispatch(setLoading(true))
         try {
-            const res = await api.get(`${owner}/${repo}/forks?page=${page}`)
+            if(type === 'get') {
+                const forks = await api.get(`${owner}/${repo}`)
+                const {forks_count} = forks.data
+                if(!forks_count) {
+                    return new Error(' Forks count is 0')
+                }
+                dispatch(setForksCount(forks_count))
+            }
+            dispatch(setPage(page))
+            const res = await api.get(`${owner}/${repo}/forks?page=${page}&per_page=${per_page}`)
             const resWithKey = res?.data?.map(e=> {return {...e, key:e.id}})
             dispatch(setData(resWithKey))
             dispatch(setLoading(false))
@@ -53,8 +78,10 @@ const initialState = {
     owner: '',
     repo: '',
     data: [],
-    current: 1
-
+    current: 1,
+    page: 1,
+    per_page: 10,
+    forks_count: 0,
 }
 
 const appReducer = (state= initialState, action) => {
@@ -82,7 +109,17 @@ const appReducer = (state= initialState, action) => {
         case APP_SET_CURRENT:
             return {
                 ...state,
-                currnet: action.payload
+                current: action.payload
+            }
+        case APP_SET_FORKS_COUNT:
+            return {
+                ...state,
+                forks_count: action.payload
+            }
+        case APP_SET_PAGE:
+            return {
+                ...state,
+                page: action.payload
             }
         default:
             return state

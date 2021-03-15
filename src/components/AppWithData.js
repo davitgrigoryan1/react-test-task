@@ -12,11 +12,11 @@ const { Title } = Typography;
 const AppWithData = ({getData, setRepo, setOwner, location}) => {
     const dispatch = useDispatch()
     useEffect(() => {
-        const {repository, owner, page} = queryString.parse(location.search);
+        const {repository, owner, page, per_page} = queryString.parse(location.search);
         if(repository && owner) {
                     dispatch(setRepo(repository))
                     dispatch(setOwner(owner))
-            getData(owner, repository, page || 1).then(e => {
+            getData(owner, repository, page || 1, per_page || 10, 'get').then(e => {
                 if(e?.data?.length) {
                     message.success('Success')
                 } else  {

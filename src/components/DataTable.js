@@ -1,16 +1,28 @@
 import React from 'react'
 import { Table} from "antd";
-import {useSelector} from "react-redux";
+import {connect, useSelector} from "react-redux";
+import {getData} from "../store/appReducer";
 
 const { Column } = Table;
 
-const DataTable = () => {
-    const { data } = useSelector(state => state.app)
+const DataTable = ({getData}) => {
+    const { data, per_page, forks_count, owner, repo, page } = useSelector(state => state.app)
+    const handleChange = (e) =>{
+        getData(owner, repo, e, per_page, 'paginate')
+    }
 
     return data.length ? (
         <Table style={{marginTop: '50px'}}
                dataSource={data}
                key={data.id}
+               pagination={{
+                   onChange: handleChange,
+                   pageSize: per_page,
+                   total: forks_count,
+                   current: +page,
+                   defaultCurrent: 1,
+                   showSizeChanger:false
+               }}
         >
             <Column title='FullName' dataIndex='full_name' key='full_name' />
             <Column title='Owner' key='id' render={e => {
@@ -24,4 +36,4 @@ const DataTable = () => {
     ) : ''
 }
 
-export default DataTable
+export default connect(null, {getData})(DataTable)
